@@ -1,2 +1,2 @@
 # TodayAccepted-project
-@ program that represent the number of solved problems in codeforces for today
+### program that represent the number of solved problems in codeforces for today
