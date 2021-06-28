@@ -23,8 +23,31 @@ driver.get("https://codeforces.com/submissions/" + username)
 
 submission_table = driver.find_element_by_class_name("status-frame-datatable")
 
-print(submission_table.text)
+
+# print(submission_table.text)
+
+words = ""
+# statements = ""
+counter = 0
+theTuple = ()
+
+with open('ccepted.csv', 'w') as file:
+    csv_writer = csv.writer(file)
+    for i in submission_table.text:
+        words += i
+        if i == ' ':
+            y = (words, )
+            theTuple += y
+            words = ""
+            counter += 1
+            if counter == 8:
+                csv_writer.writerow(theTuple)
+                theTuple = ()
+                counter = 0
+
+
+# id when who problem lang verdict time memory
 
 time.sleep(5)
 
-# driver.quit()
+driver.quit()
