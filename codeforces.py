@@ -23,9 +23,7 @@ driver.get("https://codeforces.com/submissions/" + username)
 
 submission_table = driver.find_element_by_class_name("status-frame-datatable")
 
-# print(submission_table.text)
-for i in submission_table.text:
-    print(i)
+print(submission_table.text)
 
 time.sleep(5)
 
