@@ -31,7 +31,7 @@ words = ""
 counter = 0
 theTuple = ()
 
-with open('ccepted.csv', 'w') as file:
+with open('accepted.csv', 'w') as file:
     csv_writer = csv.writer(file)
     for i in submission_table.text:
         words += i
