@@ -5,6 +5,8 @@ from selenium.webdriver.common.keys import Keys
 import time
 import csv
 
+# By Mina Magdy 😌🙋‍♂️
+
 # Login in codeforces Account
 username = input("Enter your Handle: ")
 password = getpass("Enter your Password: ")
@@ -67,4 +69,4 @@ print(f"\nYou Have Solved {Accepted} Problems Today")
 
 time.sleep(5)
 
-driver.quit()
+driver.quit() 
