@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 import csv
 
+# Login in codeforces Account
 username = input("Enter your Handle: ")
 password = getpass("Enter your Password: ")
 
@@ -27,13 +28,12 @@ rows = len(rows_table)
 
 columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th")
 cols = len(columns_table)
-# /html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th
 
-# print(submission_table.text)
+# convert Html Table (submissions) to CSV file 
 
-
-with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:
+with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:        # all you need to do is to change the path to your directory
     csv_writer = csv.writer(file)
+    # headers
     csv_writer.writerow(["id", "when", "who", "problem", "lang", "verdict", "time", "memory"])
     for r in range(2, rows + 1):
         entire_row = []
@@ -45,13 +45,13 @@ with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:
 
 Accepted = 0
 today = date.today()
-
+# yester day date
 yesterday = today - timedelta(days=1)
 yester = str(yesterday)
 yester = yester.split()[0]
 
 yesterday = int(yester[8] + yester[9])
-
+# count the number of accepted problems today
 with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader)
