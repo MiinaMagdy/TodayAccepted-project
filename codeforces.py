@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from selenium import webdriver
 from getpass import getpass
 from selenium.webdriver.common.keys import Keys
@@ -21,32 +22,48 @@ time.sleep(3)
 
 driver.get("https://codeforces.com/submissions/" + username)
 
-submission_table = driver.find_element_by_class_name("status-frame-datatable")
+rows_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr") # count number of rows
+rows = len(rows_table)
 
+columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th")
+cols = len(columns_table)
+# /html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th
 
 # print(submission_table.text)
 
-words = ""
-# statements = ""
-counter = 0
-theTuple = ()
 
-with open('accepted.csv', 'w') as file:
+with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:
     csv_writer = csv.writer(file)
-    for i in submission_table.text:
-        words += i
-        if i == ' ':
-            y = (words, )
-            theTuple += y
-            words = ""
-            counter += 1
-            if counter == 8:
-                csv_writer.writerow(theTuple)
-                theTuple = ()
-                counter = 0
+    csv_writer.writerow(["id", "when", "who", "problem", "lang", "verdict", "time", "memory"])
+    for r in range(2, rows + 1):
+        entire_row = []
+        for c in range(1, cols + 1):
+            cell = driver.find_element_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr["+str(r)+"]/td["+str(c)+"]").text
+            entire_row.append(cell) 
+        if not (entire_row == []):
+            csv_writer.writerow(entire_row)
+
+Accepted = 0
+today = date.today()
+
+yesterday = today - timedelta(days=1)
+yester = str(yesterday)
+yester = yester.split()[0]
+
+yesterday = int(yester[8] + yester[9])
+
+with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'r') as file:
+    reader = csv.reader(file)
+    next(reader)
+    for row in reader:
+        if len(row) >= 8:
+            date = int(row[1].split()[0][4] + row[1].split()[0][5])
+            if date > yesterday and row[5] == "Accepted":
+                print(f"\tProblem : {row[3]}")
+                Accepted += 1
 
 
-# id when who problem lang verdict time memory
+print(f"\nYou Have Solved {Accepted} Problems Today")
 
 time.sleep(5)
 
