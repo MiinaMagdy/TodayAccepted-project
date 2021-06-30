@@ -11,7 +11,7 @@ import csv
 username = input("Enter your Handle: ")
 password = getpass("Enter your Password: ")
 
-driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe")
+driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe") # change the path of driver to your directory
 driver.get("https://codeforces.com/enter?back=%2F")
 
 username_txtbox = driver.find_element_by_id("handleOrEmail")
