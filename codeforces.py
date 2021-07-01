@@ -7,11 +7,11 @@ import csv
 
 # By Mina Magdy 😌🙋‍♂️
 
-# Login in codeforces Account
+# Login To Codeforces Account
 username = input("Enter your Handle: ")
 password = getpass("Enter your Password: ")
 
-driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe") # change the path of driver to your directory
+driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe")
 driver.get("https://codeforces.com/enter?back=%2F")
 
 username_txtbox = driver.find_element_by_id("handleOrEmail")
@@ -23,6 +23,7 @@ password_txtbox.send_keys(Keys.RETURN)
 
 time.sleep(3)
 
+# Write All Submissions in CSV File
 driver.get("https://codeforces.com/submissions/" + username)
 
 rows_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr") # count number of rows
@@ -31,11 +32,9 @@ rows = len(rows_table)
 columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th")
 cols = len(columns_table)
 
-# convert Html Table (submissions) to CSV file 
 
-with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:        # all you need to do is to change the path to your directory
+with open('C:\\Users\\phoen\\Documents\\codeforces\\accepted.csv', 'w') as file:
     csv_writer = csv.writer(file)
-    # headers
     csv_writer.writerow(["id", "when", "who", "problem", "lang", "verdict", "time", "memory"])
     for r in range(2, rows + 1):
         entire_row = []
@@ -45,28 +44,46 @@ with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'w') as file:        # al
         if not (entire_row == []):
             csv_writer.writerow(entire_row)
 
-Accepted = 0
-today = date.today()
-# yester day date
-yesterday = today - timedelta(days=1)
-yester = str(yesterday)
-yester = yester.split()[0]
+# manipulate dates
 
-yesterday = int(yester[8] + yester[9])
-# count the number of accepted problems today
+months = {
+    "Jan" : 1,
+    "Feb" : 2,
+    "Mar" : 3,
+    "Apr" : 4,
+    "May" : 5,
+    "Jun" : 6,
+    "Jul" : 7,
+    "Aug" : 8,
+    "Sep" : 9,
+    "Oct" : 10,
+    "Nov" : 11,
+    "Dec" : 12
+}
+
+today = date.today()
+yesterday = today - timedelta(days=1)
+
+# Choose either today or yesterday
+ChoosenDay = yesterday
+choose = int(input("1-Today\n2-Yesterday\n>> "))
+if choose == 1:
+    ChoosenDay = today
+
+# Quering For Accepted Problems' Solution For Today
 with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader)
+    Accepted = 0
     for row in reader:
         if len(row) >= 8:
-            date = int(row[1].split()[0][4] + row[1].split()[0][5])
-            if date > yesterday and row[5] == "Accepted":
+            rowDate = row[1].split()[0]
+            problem_date = date(int(rowDate[7] + rowDate[8] + rowDate[9] + rowDate[10]), months[rowDate[0] + rowDate[1] + rowDate[2]], int(rowDate[4] + rowDate[5]))
+            if problem_date == ChoosenDay and row[5] == "Accepted":
                 print(f"\tProblem : {row[3]}")
                 Accepted += 1
 
+input(f"\nYou Have Solved {Accepted} Problems Today\nPress Enter to Exit...")
 
-print(f"\nYou Have Solved {Accepted} Problems Today")
-
-time.sleep(5)
-
-driver.quit() 
+time.sleep(3)
+driver.quit()
