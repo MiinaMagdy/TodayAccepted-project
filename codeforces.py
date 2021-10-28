@@ -11,7 +11,8 @@ import csv
 username = input("Enter your Handle: ")
 password = getpass("Enter your Password: ")
 
-driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe")
+# driver = webdriver.Chrome("D:\\Coding\\Selenium\\chromedriver.exe") # for Windows 10
+driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver") # for Ubuntu
 driver.get("https://codeforces.com/enter?back=%2F")
 
 username_txtbox = driver.find_element_by_id("handleOrEmail")
@@ -33,7 +34,7 @@ columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/d
 cols = len(columns_table)
 
 
-with open('C:\\Users\\phoen\\Documents\\codeforces\\accepted.csv', 'w') as file:
+with open('accepted.csv', 'w') as file:
     csv_writer = csv.writer(file)
     csv_writer.writerow(["id", "when", "who", "problem", "lang", "verdict", "time", "memory"])
     for r in range(2, rows + 1):
@@ -71,7 +72,10 @@ if choose == 1:
     ChoosenDay = today
 
 # Quering For Accepted Problems' Solution For Today
-with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'r') as file:
+
+Problems = set()
+
+with open('accepted.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader)
     Accepted = 0
@@ -80,10 +84,12 @@ with open('C:\\Users\\phoen\\Documents\\accepted.csv', 'r') as file:
             rowDate = row[1].split()[0]
             problem_date = date(int(rowDate[7] + rowDate[8] + rowDate[9] + rowDate[10]), months[rowDate[0] + rowDate[1] + rowDate[2]], int(rowDate[4] + rowDate[5]))
             if problem_date == ChoosenDay and row[5] == "Accepted":
-                print(f"\tProblem : {row[3]}")
-                Accepted += 1
+                Problems.add(row[3])
 
-input(f"\nYou Have Solved {Accepted} Problems Today\nPress Enter to Exit...")
+for problem in Problems:
+    print(f"\tProblem : {problem}")
+
+input(f"\nYou Have Solved {len(Problems)} Problems Today\nPress Enter to Exit...")
 
 time.sleep(3)
 driver.quit()
