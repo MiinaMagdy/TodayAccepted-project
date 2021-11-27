@@ -27,12 +27,11 @@ time.sleep(3)
 # Write All Submissions in CSV File
 driver.get("https://codeforces.com/submissions/" + username)
 
-rows_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr") # count number of rows
+rows_table = driver.find_elements_by_xpath("/html/body/div[6]/div[5]/div[2]/div[4]/div[6]/table/tbody/tr") # count number of rows
 rows = len(rows_table)
 
-columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th")
+columns_table = driver.find_elements_by_xpath("/html/body/div[6]/div[5]/div[2]/div[4]/div[6]/table/tbody/tr[1]/th")
 cols = len(columns_table)
-
 
 with open('accepted.csv', 'w') as file:
     csv_writer = csv.writer(file)
@@ -40,8 +39,8 @@ with open('accepted.csv', 'w') as file:
     for r in range(2, rows + 1):
         entire_row = []
         for c in range(1, cols + 1):
-            cell = driver.find_element_by_xpath("/html/body/div[6]/div[4]/div[2]/div[4]/div[6]/table/tbody/tr["+str(r)+"]/td["+str(c)+"]").text
-            entire_row.append(cell) 
+            cell = driver.find_element_by_xpath("/html/body/div[6]/div[5]/div[2]/div[4]/div[6]/table/tbody/tr["+str(r)+"]/td["+str(c)+"]").text
+            entire_row.append(cell)
         if not (entire_row == []):
             csv_writer.writerow(entire_row)
 
